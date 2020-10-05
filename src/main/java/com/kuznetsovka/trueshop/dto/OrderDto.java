@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class OrderDto {
-    private List<ProductDto> orderedProducts;
     private BigDecimal sum;
     private String address;
     private List<OrderDetails> details;
