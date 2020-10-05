@@ -8,6 +8,6 @@ public interface ProductService {
     ProductDto findById(Long id);
     Product getById(Long id);
     List<ProductDto> findAll();
-    ProductDto save(ProductDto dto);
+    boolean save(ProductDto dto);
     void delete(Long id);
 }

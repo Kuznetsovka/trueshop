@@ -3,59 +3,54 @@ package com.kuznetsovka.trueshop.service.Product;
 import com.kuznetsovka.trueshop.dao.ProductRepository;
 import com.kuznetsovka.trueshop.domain.Product;
 import com.kuznetsovka.trueshop.dto.ProductDto;
+import com.kuznetsovka.trueshop.dto.UserDto;
 import com.kuznetsovka.trueshop.mapper.ProductMapper;
+import com.kuznetsovka.trueshop.service.User.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    @PersistenceContext
-    private final EntityManager em;
     private final ProductMapper mapper = ProductMapper.MAPPER;
+    private final ProductRepository productRepository;
 
-    private final ProductRepository dao;
 
-
-    public ProductServiceImpl(EntityManager em, ProductRepository dao) {
-        this.em = em;
-        this.dao = dao;
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     @Override
     public ProductDto findById(Long id) {
-        return mapper.fromProduct(dao.getOne(id));
+        return mapper.fromProduct(productRepository.getOne(id));
     }
 
     @Override
     public Product getById(Long id) {
-        return dao.findById(id).orElse(null);
-    }
-
-    @Transactional
-    public void saveAndSet(Product product){
-        dao.save(product);
+        return productRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<ProductDto> findAll() {
-        return mapper.fromProductList(dao.findAll());
+        return mapper.fromProductList(productRepository.findAll());
     }
 
-    @Transactional
+
     @Override
-    public ProductDto save(ProductDto dto) {
-        Product entity = mapper.toProduct(dto);
-        Product savedEntity = dao.save(entity);
-        return mapper.fromProduct(savedEntity);
+    @Transactional
+    public boolean save(ProductDto dto) {
+        Product product = Product.builder()
+                .price (dto.getPrice ())
+                .categories (dto.getCategories ())
+                .build();
+        productRepository.save(product);
+        return true;
     }
 
     @Transactional
     public void delete(Long id){
-        dao.deleteById (id);
+        productRepository.deleteById (id);
     }
 
 }
