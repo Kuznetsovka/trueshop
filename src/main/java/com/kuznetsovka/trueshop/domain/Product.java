@@ -24,9 +24,20 @@ public class Product {
     private String title;
     private Double price;
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "products_suppliers",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "supplier_id"))
+    private List<Supplier> suppliers;
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "products_place_in_stock",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "place_in_stock_id"))
+    private List<PlaceInStock> placeInStocks;
 
 }

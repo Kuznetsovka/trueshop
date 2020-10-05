@@ -36,6 +36,10 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User manager;
+
     private BigDecimal sum;
     private String address;
 

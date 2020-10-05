@@ -29,5 +29,9 @@ public class User {
     private Role role;
     @OneToOne(cascade = CascadeType.REMOVE)
     private Bucket bucket;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private Favourite favourite;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private Comparison comparison;
 
 }
