@@ -1,0 +1,28 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /app
+
+spring:
+  mvc:
+    static-path-pattern: /statico/**
+  jpa:
+    hibernate:
+      ddl-auto: 'create-drop'
+  datasource:
+    name: 'dataSource'
+    url: jdbc:mysql://localhost:3306/TrueShop?serverTimezone=UTC
+    username: root
+    password: Nbirf
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, beans, mappings
+
+
+
+
+
+
+
