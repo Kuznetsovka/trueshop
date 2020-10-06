@@ -5,10 +5,10 @@ spring:
     static-path-pattern: /statico/**
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
   datasource:
-    name: 'dataSource'
+    name: 'dataTrueShop'
     url: jdbc:mysql://localhost:3306/TrueShop?serverTimezone=UTC
     username: root
     password: Nbirf
