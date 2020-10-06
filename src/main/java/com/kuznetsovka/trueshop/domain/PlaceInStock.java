@@ -19,10 +19,10 @@ public class PlaceInStock {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
-    private int row;
-    private int span;
-    private int shelf;
-    private int place;
+    private int rowFld;
+    private int spanFld;
+    private int shelfFld;
+    private int placeFld;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "place_in_stock_products",
             joinColumns = @JoinColumn(name = "place_in_stock_id"),

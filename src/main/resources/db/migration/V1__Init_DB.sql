@@ -72,7 +72,7 @@ create table order_seq (next_val bigint) engine=InnoDB;
 insert into order_seq values ( 1 );
 create table orders (id bigint not null, address varchar(255), changed datetime(6), created datetime(6), status varchar(255), sum decimal(19,2), user_id bigint, primary key (id)) engine=InnoDB;
 create table orders_details (id bigint not null, amount decimal(19,2), price decimal(19,2), order_id bigint, product_id bigint, primary key (id)) engine=InnoDB;
-create table place_in_stock (id bigint not null, place integer not null, row integer not null, shelf integer not null, span integer not null, primary key (id)) engine=InnoDB;
+create table place_in_stock (id bigint not null, place_fld integer not null, row_fld integer not null, shelf_fld integer not null, span_fld integer not null, primary key (id)) engine=InnoDB;
 create table place_in_stock_products (place_in_stock_id bigint not null, product_id bigint not null) engine=InnoDB;
 create table place_seq (next_val bigint) engine=InnoDB;
 insert into place_seq values ( 1 );
