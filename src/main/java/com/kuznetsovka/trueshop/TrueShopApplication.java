@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TrueshopApplication {
+public class TrueShopApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TrueshopApplication.class, args);
+		SpringApplication.run(TrueShopApplication.class, args);
 	}
 
 }
