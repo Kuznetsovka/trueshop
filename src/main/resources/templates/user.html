@@ -10,11 +10,11 @@
 <body>
 
 <h1>User form</h1>
-<form th:action="@{/user/new}" th:object="${user}" method="post">
+<form th:action="@{/users/new}" th:object="${user}" method="post">
     <table border="1" class="table table-hover">
         <tr>
             <td>Name</td>
-            <td><input type="text" th:field="*{username}"></td>
+            <td><input type="text" th:field="*{name}"></td>
         </tr>
         <tr>
             <td>Password</td>
@@ -25,7 +25,7 @@
             <td><input type="password" th:field="*{matchingPassword}"></td>
         </tr>
         <tr>
-            <td>Matching password</td>
+            <td>Email</td>
             <td><input type="email" th:field="*{email}"></td>
         </tr>
 
