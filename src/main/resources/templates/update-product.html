@@ -8,14 +8,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div th:insert="~{menu :: #nav-menu}"></div>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
 
 <form th:action="@{/products/update}" th:object="${product}" method="post">
     <table border="1">
         <tr>
             <td>Name</td>
-            <td th:text="${product.name}">Old name</td>
-            <td><input type="text" th:field="*{name}"/>New name</td>
+            <td th:text="${product.title}">Old name</td>
+            <td><input type="text" th:field="*{title}"/>New name</td>
         </tr>
         <tr>
             <td>Price</td>

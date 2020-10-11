@@ -73,6 +73,11 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public Long getId(ProductDto updateProduct) {
+        return mapper.toProduct (updateProduct).getId ();
+    }
+
     @Transactional
     public void delete(Long id){
         productRepository.deleteById (id);

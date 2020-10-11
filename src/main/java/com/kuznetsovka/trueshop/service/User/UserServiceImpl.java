@@ -1,8 +1,7 @@
 package com.kuznetsovka.trueshop.service.User;
 
 import com.kuznetsovka.trueshop.dao.UserRepository;
-import com.kuznetsovka.trueshop.domain.Role;
-import com.kuznetsovka.trueshop.domain.User;
+import com.kuznetsovka.trueshop.domain.*;
 import com.kuznetsovka.trueshop.dto.UserDto;
 import com.kuznetsovka.trueshop.mapper.UserMapper;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +27,18 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        InitBDUser();
     }
+
+    private void InitBDUser() {
+        if (!userRepository.existsById ((long) 1)) {
+            userRepository.saveAll (Arrays.asList (
+                    new User (null, "admin", passwordEncoder.encode ("pass"), "mail@gmail.com", false, Role.ADMIN, null, null, null),
+                    new User (null, "user", passwordEncoder.encode ("pass"), "test@gmail.com", false, Role.MANAGER, null, null, null)
+            ));
+        }
+    }
+
 
     @Override
     @Transactional
@@ -36,13 +47,23 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException ("Password is not equal");
         }
         User user = User.builder()
-                .name(userDto.getUsername())
+                .name(userDto.getName())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .email(userDto.getEmail())
                 .role(Role.CLIENT)
                 .build();
         userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Long getId(UserDto user) {
+        return mapper.toUser (user).getId ();
     }
 
     @Override
@@ -65,24 +86,23 @@ public class UserServiceImpl implements UserService {
         return mapper.fromUserList (userRepository.findAll());
     }
 
-//    @Override
-//    public User auth(String name, String password) {
-//        if(name == null || name.isEmpty()){
-//            System.out.println("You are not authenticated");
-//            return null;
-//        }
-//        User user = userRepository.findFirstByName(name);
-//        if(user == null){
-//            System.out.println("You are not authenticated");
-//            return null;
-//        }
-//        if(!Objects.equals(password, user.getPassword())){
-//            System.out.println("You are not authenticated");
-//            return null;
-//        }
-//        System.out.println("You are authenticated");
-//        return user;
-//    }
+    public User auth(String name, String password) {
+        if(name == null || name.isEmpty()){
+            System.out.println("You are not authenticated");
+            return null;
+        }
+        User user = userRepository.findFirstByName(name);
+        if(user == null){
+            System.out.println("You are not authenticated");
+            return null;
+        }
+        if(!Objects.equals(password, user.getPassword())){
+            System.out.println("You are not authenticated");
+            return null;
+        }
+        System.out.println("You are authenticated");
+        return user;
+    }
 
     @Override
     public void delete(Long id){
@@ -94,13 +114,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-
     @Override
     @Transactional
     public void updateProfile(UserDto dto) {
-        User savedUser = userRepository.findFirstByName(dto.getUsername());
+        User savedUser = userRepository.findFirstByName(dto.getName());
         if(savedUser == null){
-            throw new RuntimeException("User not found by name " + dto.getUsername());
+            throw new RuntimeException("User not found by name " + dto.getName());
         }
 
         boolean changed = false;

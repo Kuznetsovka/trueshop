@@ -11,4 +11,5 @@ public interface ProductService {
     boolean save(ProductDto dto);
     void delete(Long id);
     void addToUserBucket(Long productId, String username);
+    Long getId(ProductDto updateProduct);
 }
