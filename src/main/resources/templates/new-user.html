@@ -2,35 +2,36 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>User</title>
+    <title>Products</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
+<div th:insert="~{menu :: #nav-menu}"></div>
 
-<h1>User form</h1>
-<form th:action="@{/user/new}" th:object="${user}" method="post">
-    <table border="1" class="table table-hover">
+<form th:action="@{/users/new}" th:object="${user}" method="post">
+    <table border="1">
         <tr>
             <td>Name</td>
-            <td><input type="text" th:field="*{username}"></td>
+            <td><input type="text" th:field="*{name}"/> </td>
         </tr>
         <tr>
             <td>Password</td>
-            <td><input type="password" th:field="*{password}"></td>
+            <td><input type="text" th:field="*{password}"/></td>
         </tr>
         <tr>
-            <td>Matching password</td>
-            <td><input type="password" th:field="*{matchingPassword}"></td>
+            <td>Role</td>
+            <td>
+                <select name="role">
+                    <option th:each="r : ${T(com.baeldung.thymeleaf.model.Role).values()}"
+                            th:value="${r}" th:text="${r}"></option>
+                </select>
+            </td>
         </tr>
-        <tr>
-            <td>Matching password</td>
-            <td><input type="email" th:field="*{email}"></td>
-        </tr>
-
     </table>
     <button type="submit">Save</button>
 </form>
+
 </body>
 </html>

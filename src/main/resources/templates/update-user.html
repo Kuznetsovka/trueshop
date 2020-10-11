@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:insert="~{menu :: #nav-menu}"></div>
+
+<form th:action="@{/users/update}" th:object="${user}" method="post">
+    <table border="1">
+        <tr>
+            <td>Name</td>
+            <td th:text="${user.name}">Old name</td>
+            <td><input type="text" th:field="*{name}"/>New name</td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td th:text="${user.password}">Old price</td>
+            <td><input type="text" th:field="*{password}"/>New price</td>
+        </tr>
+        <tr>
+            <td>Role</td>
+            <select name="role">
+                <option th:each="r : ${T(com.baeldung.thymeleaf.model.Role).values()}"
+                        th:value="${r}" th:text="${r}"></option>
+            </select>
+        </tr>
+    </table>
+    <button type="submit">Update</button>
+</form>
+
+</body>
+</html>

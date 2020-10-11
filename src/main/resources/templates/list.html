@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:insert="~{menu :: #nav-menu}"></div>
+
+<h1>All products</h1>
+<span th:if="${products.size() == 0}">Products List is empty</span>
+<table th:if="${products.size() > 0}" class="table table-hover">
+    <thead class="thead-dark">
+    <tr>
+        <td>Title</td>
+        <td>Price</td>
+    </tr>
+    <tr th:each="product : ${products}">
+        <td><a th:href="@{/products/(id=${product.id})}" th:text="${product.title}"></a></td>
+        <td th:text="${product.price}"/>
+    </tr>
+</table>
+<form action="#" th:action="@{/products/maxupprice}" method="post">
+    <button type="submit">Sort Up</button>
+</form>
+<form action="#" th:action="@{/products/minupprice}" method="post">
+    <button type="submit">Sort Down</button>
+</form>
+</body>
+</html>

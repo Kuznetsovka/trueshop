@@ -6,6 +6,7 @@
 </head>
 <body>
 
+<p th:if="${loginError}" class="error">Wrong user or password</p>
 <form th:action="@{/auth}" method="post">
     <table border="1">
         <tr>
@@ -17,7 +18,7 @@
             <td><input type="password" name="password"/></td>
         </tr>
     </table>
-    <button type="submit">Login</button>
+    <button type="submit">Log in</button>
 </form>
 
 </body>

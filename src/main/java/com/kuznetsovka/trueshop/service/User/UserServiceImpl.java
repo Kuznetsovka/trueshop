@@ -46,37 +46,75 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByName(String name) {
+        return userRepository.findFirstByName(name);
+    }
+
+    @Override
     public UserDto findById(Long id) {
         return mapper.fromUser(userRepository.getOne (id));
     }
 
     @Override
-    public List<UserDto> findAll() {
-        return null;
+    public UserDto getByName(String name) {
+        return mapper.fromUser (userRepository.findFirstByName (name));
     }
 
     @Override
-    public User auth(String name, String password) {
-        if(name == null || name.isEmpty()){
-            System.out.println("You are not authenticated");
-            return null;
-        }
-        User user = userRepository.findFirstByName(name);
-        if(user == null){
-            System.out.println("You are not authenticated");
-            return null;
-        }
-        if(!Objects.equals(password, user.getPassword())){
-            System.out.println("You are not authenticated");
-            return null;
-        }
-        System.out.println("You are authenticated");
-        return user;
+    public List<UserDto> findAll() {
+        return mapper.fromUserList (userRepository.findAll());
     }
+
+//    @Override
+//    public User auth(String name, String password) {
+//        if(name == null || name.isEmpty()){
+//            System.out.println("You are not authenticated");
+//            return null;
+//        }
+//        User user = userRepository.findFirstByName(name);
+//        if(user == null){
+//            System.out.println("You are not authenticated");
+//            return null;
+//        }
+//        if(!Objects.equals(password, user.getPassword())){
+//            System.out.println("You are not authenticated");
+//            return null;
+//        }
+//        System.out.println("You are authenticated");
+//        return user;
+//    }
 
     @Override
     public void delete(Long id){
         userRepository.deleteById (id);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+
+    @Override
+    @Transactional
+    public void updateProfile(UserDto dto) {
+        User savedUser = userRepository.findFirstByName(dto.getUsername());
+        if(savedUser == null){
+            throw new RuntimeException("User not found by name " + dto.getUsername());
+        }
+
+        boolean changed = false;
+        if(dto.getPassword() != null && !dto.getPassword().isEmpty()){
+            savedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+            changed = true;
+        }
+        if(!Objects.equals(dto.getEmail(), savedUser.getEmail())){
+            savedUser.setEmail(dto.getEmail());
+            changed = true;
+        }
+        if(changed){
+            userRepository.save(savedUser);
+        }
     }
 
     @Override

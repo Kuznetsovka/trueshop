@@ -9,7 +9,10 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     boolean save(UserDto userDto);
     UserDto findById(Long id);
+    UserDto getByName(String name);
+    User findByName(String name);
     List<UserDto> findAll();
-    User auth(String name, String password);
     void delete(Long id);
+    void save(User user);
+    void updateProfile(UserDto dto);
 }
