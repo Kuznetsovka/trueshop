@@ -8,6 +8,7 @@ import com.kuznetsovka.trueshop.domain.User;
 import com.kuznetsovka.trueshop.dto.BucketDetailDto;
 import com.kuznetsovka.trueshop.dto.BucketDto;
 import com.kuznetsovka.trueshop.service.User.UserService;
+import com.kuznetsovka.trueshop.service.measure.MeasureMethod;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,6 +31,7 @@ public class BucketServiceImpl implements BucketService {
         this.userService = userService;
     }
 
+    @MeasureMethod
     @Override
     @Transactional
     public Bucket createBucket(User user, List<Long> productIds) {
@@ -46,6 +48,7 @@ public class BucketServiceImpl implements BucketService {
                 .collect(Collectors.toList());
     }
 
+    @MeasureMethod
     @Override
     @Transactional
     public void addProducts(Bucket bucket, List<Long> productIds) {

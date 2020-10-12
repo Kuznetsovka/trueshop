@@ -4,6 +4,7 @@ import com.kuznetsovka.trueshop.dao.UserRepository;
 import com.kuznetsovka.trueshop.domain.*;
 import com.kuznetsovka.trueshop.dto.UserDto;
 import com.kuznetsovka.trueshop.mapper.UserMapper;
+import com.kuznetsovka.trueshop.service.measure.MeasureMethod;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
         InitBDUser();
     }
-
+    @MeasureMethod
     private void InitBDUser() {
         if (!userRepository.existsById ((long) 1)) {
             userRepository.saveAll (Arrays.asList (
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @MeasureMethod
     @Override
     @Transactional
     public boolean save(UserDto userDto) {
@@ -86,24 +87,6 @@ public class UserServiceImpl implements UserService {
         return mapper.fromUserList (userRepository.findAll());
     }
 
-    public User auth(String name, String password) {
-        if(name == null || name.isEmpty()){
-            System.out.println("You are not authenticated");
-            return null;
-        }
-        User user = userRepository.findFirstByName(name);
-        if(user == null){
-            System.out.println("You are not authenticated");
-            return null;
-        }
-        if(!Objects.equals(password, user.getPassword())){
-            System.out.println("You are not authenticated");
-            return null;
-        }
-        System.out.println("You are authenticated");
-        return user;
-    }
-
     @Override
     public void delete(Long id){
         userRepository.deleteById (id);
@@ -114,6 +97,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @MeasureMethod
     @Override
     @Transactional
     public void updateProfile(UserDto dto) {
