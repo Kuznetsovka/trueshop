@@ -43,6 +43,7 @@ public class UserController {
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/new")
     public String newUser(Model model){
         model.addAttribute("user", new UserDto());
