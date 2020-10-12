@@ -28,6 +28,15 @@
             <td>Email</td>
             <td><input type="email" th:field="*{email}"></td>
         </tr>
+        <tr>
+            <td>Role</td>
+            <td>
+                <select name="role">
+                    <option th:each="r : ${T(com.kuznetsovka.trueshop.domain.Role).values()}"
+                            th:value="${r}" th:text="${r}"></option>
+                </select>
+            </td>
+        </tr>
 
     </table>
     <button type="submit">Save</button>
