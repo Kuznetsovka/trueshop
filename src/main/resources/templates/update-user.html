@@ -14,20 +14,23 @@
     <table border="1">
         <tr>
             <td>Name</td>
-            <td th:text="${user.name}">Old name</td>
+            <td th:text="*{name}">Old name</td>
             <td><input type="text" th:field="*{name}"/>New name</td>
         </tr>
         <tr>
-            <td>Password</td>
-            <td th:text="${user.password}">Old price</td>
-            <td><input type="text" th:field="*{password}"/>New price</td>
+            <td>Old password</td>
+            <td th:text="@UserServiceImpl.passwordEncoder.encode(password=${user.password})">Old password</td>
+            <td><input type="text" th:field="*{password}"/>New password</td>
         </tr>
         <tr>
             <td>Role</td>
-            <select name="role">
-                <option th:each="r : ${T(com.baeldung.thymeleaf.model.Role).values()}"
-                        th:value="${r}" th:text="${r}"></option>
-            </select>
+            <td th:text="*{role}">role</td>
+            <td>
+                <select name="role">
+                    <option th:each="r : ${T(com.kuznetsovka.trueshop.domain.Role).values()}"
+                            th:value="${r}" th:text="${r}"></option>
+                </select>
+            </td>
         </tr>
     </table>
     <button type="submit">Update</button>

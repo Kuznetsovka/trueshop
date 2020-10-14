@@ -42,8 +42,9 @@ public class ProductController {
         return "list";
     }
 
-    @GetMapping("/{id}/bucket")
-    public String addBucket(@PathVariable Long id, Principal principal){
+    // http://localhost:8090/products/bucket/add?id=1
+    @RequestMapping(value = "/bucket/add")
+    public String addBucket(@RequestParam Long id, Principal principal){
         sessionObjectHolder.addClick();
         if(principal == null){
             return "redirect:/products";
