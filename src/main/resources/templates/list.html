@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
@@ -17,10 +17,22 @@
     <tr>
         <td>Title</td>
         <td>Price</td>
+        <td>Add</td>
+        <td>Delete</td>
     </tr>
     <tr th:each="product : ${products}">
         <td><a th:href="@{/products/(id=${product.id})}" th:text="${product.title}"></a></td>
-        <td th:text="${product.price}"/>
+        <td th:text="${product.price}"/></td>
+        <td>
+            <form action="#" th:action="@{/products/bucket/add?(id=${product.id})}" method="post">
+                <button type="submit">Add</button>
+            </form>
+        </td>
+        <td  sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">
+            <form action="#" th:action="@{/products/delete?(id=${product.id})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
 </table>
 <form action="#" th:action="@{/products/maxupprice}" method="post">

@@ -21,7 +21,7 @@
 
         </td>
         <td align="right">
-            <div sec:authorize="isAuthenticated()">
+            <div sec:authorize="isAuthenticated()" align="right">
                 <div>
                     Hello, <a th:href="@{/users/profile}"><span sec:authentication="principal.username">Bob</span></a>
                 </div>
@@ -29,10 +29,11 @@
                     <a th:href="@{/logout}">Logout</a>
                 </div>
             </div>
-            <div sec:authorize="!isAuthenticated()">
+            <div sec:authorize="!isAuthenticated()" align="right">>
                 <div>
                     Hello, Unknown. Please <a th:href="@{/login}">Login</a>
                 </div>
+
             </div>
         </td>
     </tr>

@@ -9,6 +9,8 @@ import com.kuznetsovka.trueshop.exception.EntityNotFoundException;
 import com.kuznetsovka.trueshop.service.User.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,12 +43,14 @@ public class UserController {
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/new")
     public String newUser(Model model){
         model.addAttribute("user", new UserDto());
         return "user";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/new")
     public String saveUser(UserDto dto, Model model){
         if(userService.save(dto)){
@@ -57,7 +61,7 @@ public class UserController {
             return "user";
         }
     }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public String profileUser(Model model, Principal principal){
         if(principal == null){
@@ -69,6 +73,7 @@ public class UserController {
         return "profile";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile")
     public String updateProfileUser(UserDto dto, Model model, Principal principal){
         if(principal == null
@@ -87,12 +92,22 @@ public class UserController {
     }
 
         // http://localhost:8090/app/users/update?id=3 - GET
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/update")
     public String getFormUpdateProduct(Model model,@RequestParam(name = "id") long id){
         UserDto byId = userService.findById(id);
         model.addAttribute("user",
                 byId == null ? new UserDto(): byId);
         return "update-user";
+    }
+
+    @PostAuthorize("isAuthenticated() and #name == authentication.principal.username")
+    @GetMapping("/{name}/roles")
+    @ResponseBody
+    public String getRoles(@PathVariable("name") String name){
+        System.out.println("Called method getRoles");
+        User byName = userService.findByName(name);
+        return byName.getRole().name();
     }
 
      //http://localhost:8090/app/users/update - POST

@@ -8,6 +8,7 @@ import com.kuznetsovka.trueshop.dto.ProductDto;
 import com.kuznetsovka.trueshop.mapper.ProductMapper;
 import com.kuznetsovka.trueshop.service.User.UserService;
 import com.kuznetsovka.trueshop.service.bucket.BucketService;
+import com.kuznetsovka.trueshop.service.measure.MeasureMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
         return true;
     }
 
+    @MeasureMethod
     @Override
     @Transactional
     public void addToUserBucket(Long productId, String username) {
