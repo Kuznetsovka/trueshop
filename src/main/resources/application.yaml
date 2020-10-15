@@ -19,6 +19,10 @@ management:
     web:
       exposure:
         include: info, health, beans, mappings
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.ws: DEBUG
 
 
 
