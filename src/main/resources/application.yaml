@@ -1,8 +1,6 @@
 server:
   port: 8090
 spring:
-  mvc:
-    static-path-pattern: /statico/**
   jpa:
     hibernate:
       ddl-auto: validate

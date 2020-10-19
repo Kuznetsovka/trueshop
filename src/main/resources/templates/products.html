@@ -17,19 +17,19 @@
     <tr>
         <td>Title</td>
         <td>Price</td>
-        <td>Add</td>
-        <td>Delete</td>
+        <td sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">Add</td >
+        <td sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">Delete</td>
     </tr>
     <tr th:each="product : ${products}">
-        <td><a th:href="@{/products/(id=${product.id})}" th:text="${product.title}"></a></td>
+        <td><a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.title}"></a></td>
         <td th:text="${product.price}"/></td>
-        <td>
-            <form action="#" th:action="@{/products/bucket/add?(id=${product.id})}" method="post">
+        <td sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">
+            <form action="#" th:action="@{/products/{id}/bucket(id=${product.id})}" method="post">
                 <button type="submit">Add</button>
             </form>
         </td>
         <td  sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">
-            <form action="#" th:action="@{/products/delete?(id=${product.id})}" method="post">
+            <form action="#" th:action="@{/products/{id}/delete(id=${product.id})}" method="post">
                 <button type="submit">Delete</button>
             </form>
         </td>

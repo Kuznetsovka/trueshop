@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ProductDto {
-    private String name;
+    private Long id;
+    private String title;
     private Double price;
     private List<Category> categories;
 }

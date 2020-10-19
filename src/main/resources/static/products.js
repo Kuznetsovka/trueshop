@@ -11,7 +11,7 @@ function connect() {
     stomp = Stomp.over(socket);
     stomp.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stomp.subscribe('/topic/products', function (product) {
+        stomp.subscribe('/topic/product', function (product) {
             renderItem(product);
         });
     });
@@ -24,10 +24,10 @@ $(function () {
     });
     $( "#send" ).click(function() { sendContent(); });
 });
-
+//Хотел чтобы ланные обновляли страницу product но не выходит, дописывает данные на той-же странице.
 // отправка сообщения на сервер
 function sendContent() {
-    stomp.send("/app/products", {}, JSON.stringify({
+    stomp.send("/app/product", {}, JSON.stringify({
         'title': $("#title").val(),
         'price': $("#price").val()
     }));
@@ -39,6 +39,20 @@ function renderItem(productJson) {
     $("#table").append("<tr>" +
         "<td>" +product.title +"</td>" +
         "<td>" +product.price +"</td>" +
-        "<td><a href='/products/" + product.id +"/bucket'>Add to bucket</a></td>" +
-        "</tr>");
+     "</tr>");
+//Жаль нельза ID достать
+//    $("#table").append("<tr>" +
+//        "<td><a href='/products/" + product.id +"text=" + product.title + "</td>" +
+//        "<td>" + product.price +"</td>" +
+//        "<td>"
+//            "<form action='#' action='/products/bucket/add?id=" + product.id + " method='post'>" +
+//                "<button type='submit'>Add</button>" +
+//            "</form>" +
+//        "</td>" +
+//        "<td>"
+//            "<form action='#' action='/products/delete?id=" + product.id " method='post'>" +
+//                "<button type='submit'>Delete</button>" +
+//            "</form>" +
+//        "</td>" +
+//    "</tr>");
 }
