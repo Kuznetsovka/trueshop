@@ -10,6 +10,7 @@ import com.kuznetsovka.trueshop.service.product.ProductService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,12 @@ public class ProductController {
     public String list(Model model){
         products = productRepository.findAll ();
         model.addAttribute("products", products);
-        return "list";
+        return "products";
     }
 
-    // http://localhost:8090/products/bucket/add?id=1
-    @RequestMapping(value = "/bucket/add")
-    public String addBucket(@RequestParam Long id, Principal principal){
+    // http://localhost:8090/products/{id}/bucket
+    @RequestMapping("/{id}/bucket")
+    public String addBucket(@PathVariable Long id, Principal principal){
         sessionObjectHolder.addClick();
         if(principal == null){
             return "redirect:/products";
@@ -53,14 +54,15 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    // http://localhost:8090/products/?id=1 - GET
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String getByIdLink(Model model, @RequestParam Long id){
-        checkById(id);
-        ProductDto byId = productService.findById (id);
-        model.addAttribute("product",
-                byId == null ? new Product (): byId);
-        return "product";
+    @MessageMapping("/product")
+    public void messageAddProduct(ProductDto dto){
+        productService.addProduct(dto);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addProduct(ProductDto dto){
+        productService.addProduct(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // http://localhost:8090/products/1 - GET
@@ -89,13 +91,13 @@ public class ProductController {
         return "new-product";
     }
 
-    // http://localhost:8090/products/new - POST
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String addNewProduct(Product savedProduct){
-        productRepository.save(savedProduct);
-        System.out.println(savedProduct);
-        return "redirect:/products/" + savedProduct.getId();
-    }
+//    // http://localhost:8090/products/new - POST
+//    @RequestMapping(value = "/new", method = RequestMethod.POST)
+//    public String addNewProduct(Product savedProduct){
+//        productRepository.save(savedProduct);
+//        System.out.println(savedProduct);
+//        return "redirect:/products/" + savedProduct.getId();
+//    }
 
     // http://localhost:8090/products/update?id=3 - GET
     @GetMapping("/update")
@@ -127,7 +129,7 @@ public class ProductController {
                                @RequestParam String name){
         List<Product> products = productRepository.findAllByTitleLike (name);
         model.addAttribute("products", products);
-        return "list";
+        return "products";
     }
 
     // http://localhost:8090/products?priceFrom=500&priceTo=700
@@ -137,7 +139,7 @@ public class ProductController {
                                   @RequestParam double priceTo){
         List<Product> products = productRepository.findAllByPriceBetween (priceFrom, priceTo);
         model.addAttribute("products", products);
-        return "list";
+        return "products";
     }
 
     // http://localhost:8090/products/filter?priceFrom=500&priceTo=700
@@ -147,13 +149,23 @@ public class ProductController {
                                 @RequestParam(required = false) Double priceTo){
         List<Product> products = productRepository.findAllByPriceBetween (priceFrom, priceTo == null ? Double.MAX_VALUE : priceTo);
         model.addAttribute("products", products);
-        return "list";
+        return "products";
     }
 
-    // http://localhost:8090/products/delete?id=1
-    @RequestMapping(value = "/delete")
-    public String removeById(Model model,
-                             @RequestParam(name = "id") long id){
+    // http://localhost:8090/products/{id}/delete
+    @RequestMapping(value="/{id}/delete", method = RequestMethod.POST)
+    public String removeById(Model model, @PathVariable Long id){
+        checkById(id);
+        products.remove (productService.findById (id));
+        productRepository.deleteById (id);
+        System.out.println("Удален продукт с id" + id);
+        model.addAttribute("products", products);
+        return "redirect:/products";
+    }
+
+    // http://localhost:8090/products/{id}/delete
+    @RequestMapping(value="/{id}/delete", method = RequestMethod.GET)
+    public String getRemoveById(Model model, @PathVariable Long id){
         checkById(id);
         products.remove (productService.findById (id));
         productRepository.deleteById (id);
@@ -167,7 +179,7 @@ public class ProductController {
     public String filterByMaxPriceProduct(Model model){
         List<Product> products = productRepository.findAll (Sort.by("price").descending ());
         model.addAttribute("products", products);
-        return "list";
+        return "products";
     }
 
     // http://localhost:8090/products/minupprice - GET
@@ -175,7 +187,7 @@ public class ProductController {
     public String filterByMinPriceProduct(Model model){
         List<Product> products = productRepository.findAll (Sort.by("price").ascending());
         model.addAttribute("products", products);
-        return "list";
+        return "products";
     }
 
     // http://localhost:8090/products/maxprice - GET
