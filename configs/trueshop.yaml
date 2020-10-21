@@ -1,0 +1,8 @@
+server:
+  port: ${trueshop.server.port}
+spring:
+  datasource:
+    name: 'dataTrueShop'
+    url: jdbc:mysql://localhost:3306/TrueShop?serverTimezone=UTC
+    username: root
+    password: Nbirf
