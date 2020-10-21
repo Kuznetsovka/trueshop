@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/Kuznetsovka/trueshop.git
+          uri: https://github.com/Kuznetsovka/myConfigs.git
           search-paths: configs
           clone-on-start: true
   application:
