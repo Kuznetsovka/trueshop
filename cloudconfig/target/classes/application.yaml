@@ -1,0 +1,15 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Kuznetsovka/trueshop.git
+          search-paths: configs
+          clone-on-start: true
+  application:
+    name: config_server
+logging:
+  level:
+    org.springframework.cloud: DEBUG
