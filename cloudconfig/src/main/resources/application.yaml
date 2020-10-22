@@ -6,7 +6,7 @@ spring:
       server:
         git:
           uri: https://github.com/Kuznetsovka/trueshop.git
-          search-paths: configs
+          search-paths: configs/properties
           clone-on-start: true
   application:
     name: config_server
