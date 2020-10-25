@@ -5,8 +5,6 @@ import com.kuznetsovka.trueshop.dao.ProductRepository;
 import com.kuznetsovka.trueshop.domain.*;
 import com.kuznetsovka.trueshop.dto.BucketDetailDto;
 import com.kuznetsovka.trueshop.dto.BucketDto;
-import com.kuznetsovka.trueshop.dto.ProductDto;
-import com.kuznetsovka.trueshop.mapper.ProductMapper;
 import com.kuznetsovka.trueshop.service.user.UserService;
 import com.kuznetsovka.trueshop.service.order.OrderService;
 import com.kuznetsovka.trueshop.service.measure.MeasureMethod;
