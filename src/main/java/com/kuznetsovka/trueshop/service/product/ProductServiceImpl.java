@@ -6,7 +6,7 @@ import com.kuznetsovka.trueshop.domain.Product;
 import com.kuznetsovka.trueshop.domain.User;
 import com.kuznetsovka.trueshop.dto.ProductDto;
 import com.kuznetsovka.trueshop.mapper.ProductMapper;
-import com.kuznetsovka.trueshop.service.User.UserService;
+import com.kuznetsovka.trueshop.service.user.UserService;
 import com.kuznetsovka.trueshop.service.bucket.BucketService;
 import com.kuznetsovka.trueshop.service.measure.MeasureMethod;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

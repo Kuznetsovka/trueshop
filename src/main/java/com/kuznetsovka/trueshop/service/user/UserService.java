@@ -1,4 +1,4 @@
-package com.kuznetsovka.trueshop.service.User;
+package com.kuznetsovka.trueshop.service.user;
 
 import com.kuznetsovka.trueshop.domain.User;
 import com.kuznetsovka.trueshop.dto.UserDto;

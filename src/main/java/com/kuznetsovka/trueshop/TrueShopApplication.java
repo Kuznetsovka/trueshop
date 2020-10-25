@@ -3,6 +3,7 @@ package com.kuznetsovka.trueshop;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.integration.channel.DirectChannel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication

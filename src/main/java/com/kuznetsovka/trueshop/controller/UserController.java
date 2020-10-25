@@ -1,12 +1,10 @@
 package com.kuznetsovka.trueshop.controller;
 
-import com.kuznetsovka.trueshop.domain.Product;
 import com.kuznetsovka.trueshop.domain.User;
 import com.kuznetsovka.trueshop.dto.EntityNotFoundResponse;
-import com.kuznetsovka.trueshop.dto.ProductDto;
 import com.kuznetsovka.trueshop.dto.UserDto;
 import com.kuznetsovka.trueshop.exception.EntityNotFoundException;
-import com.kuznetsovka.trueshop.service.User.UserService;
+import com.kuznetsovka.trueshop.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -16,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Objects;
 
 @Controller

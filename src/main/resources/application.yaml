@@ -4,10 +4,10 @@ server:
 spring:
   application:
     name: trueshop
-  cloud:
-    config:
-      uri:
-        - http://localhost:8888
+#  cloud:
+#    config:
+#      uri:
+#        - http://localhost:8888
   jpa:
     hibernate:
       ddl-auto: validate

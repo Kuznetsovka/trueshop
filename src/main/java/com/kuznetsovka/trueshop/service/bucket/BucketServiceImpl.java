@@ -2,16 +2,16 @@ package com.kuznetsovka.trueshop.service.bucket;
 
 import com.kuznetsovka.trueshop.dao.BucketRepository;
 import com.kuznetsovka.trueshop.dao.ProductRepository;
-import com.kuznetsovka.trueshop.domain.Bucket;
-import com.kuznetsovka.trueshop.domain.Product;
-import com.kuznetsovka.trueshop.domain.User;
+import com.kuznetsovka.trueshop.domain.*;
 import com.kuznetsovka.trueshop.dto.BucketDetailDto;
 import com.kuznetsovka.trueshop.dto.BucketDto;
-import com.kuznetsovka.trueshop.service.User.UserService;
+import com.kuznetsovka.trueshop.service.user.UserService;
+import com.kuznetsovka.trueshop.service.order.OrderService;
 import com.kuznetsovka.trueshop.service.measure.MeasureMethod;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +24,13 @@ public class BucketServiceImpl implements BucketService {
     private final BucketRepository bucketRepository;
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final OrderService orderService;
 
-    public BucketServiceImpl(BucketRepository bucketRepository, ProductRepository productRepository, UserService userService) {
+    public BucketServiceImpl(BucketRepository bucketRepository, ProductRepository productRepository, UserService userService, OrderService orderService) {
         this.bucketRepository = bucketRepository;
         this.productRepository = productRepository;
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @MeasureMethod
@@ -85,5 +87,41 @@ public class BucketServiceImpl implements BucketService {
         bucketDto.aggregate();
 
         return bucketDto;
+    }
+
+    @Override
+    @Transactional
+    public void commitBucketToOrder(String username) {
+        User user = userService.findByName(username);
+        if(user == null){
+            throw new RuntimeException("User is not found");
+        }
+        Bucket bucket = user.getBucket();
+        if(bucket == null || bucket.getProducts().isEmpty()){
+            return;
+        }
+
+        Order order = new Order();
+        order.setStatus(OrderStatus.NEW);
+        order.setUser(user);
+
+        Map<Product, Long> productWithAmount = bucket.getProducts().stream()
+                .collect(Collectors.groupingBy(product -> product, Collectors.counting()));
+
+        List<OrderDetails> orderDetails = productWithAmount.entrySet().stream()
+                .map(pair -> new OrderDetails(order, pair.getKey(), pair.getValue()))
+                .collect(Collectors.toList());
+
+        BigDecimal total = new BigDecimal(orderDetails.stream()
+                .map(detail -> detail.getPrice().multiply(detail.getAmount()))
+                .mapToDouble(BigDecimal::doubleValue).sum());
+
+        order.setDetails(orderDetails);
+        order.setSum(total);
+        order.setAddress("none");
+
+        orderService.saveOrder(order);
+        bucket.getProducts().clear();
+        bucketRepository.save(bucket);
     }
 }

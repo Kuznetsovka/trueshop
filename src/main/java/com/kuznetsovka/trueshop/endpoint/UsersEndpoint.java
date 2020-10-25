@@ -1,7 +1,7 @@
 package com.kuznetsovka.trueshop.endpoint;
 
 import com.kuznetsovka.trueshop.dto.UserDto;
-import com.kuznetsovka.trueshop.service.User.UserService;
+import com.kuznetsovka.trueshop.service.user.UserService;
 import com.kuznetsovka.trueshop.ws.users.GetUsersRequest;
 import com.kuznetsovka.trueshop.ws.users.GetUsersResponse;
 import com.kuznetsovka.trueshop.ws.users.UserWS;

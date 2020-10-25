@@ -107,6 +107,13 @@
 			<version>RELEASE</version>
 		</dependency>
 
+		<!-- INTEGRATION -->
+
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-http</artifactId>
+		</dependency>
+
 		<!--https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

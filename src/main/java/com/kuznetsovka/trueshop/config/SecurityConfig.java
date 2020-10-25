@@ -1,7 +1,7 @@
 package com.kuznetsovka.trueshop.config;
 
 import com.kuznetsovka.trueshop.domain.Role;
-import com.kuznetsovka.trueshop.service.User.UserService;
+import com.kuznetsovka.trueshop.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
