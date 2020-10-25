@@ -1,1 +1,0 @@
-https://github.com/Kuznetsovka/myIntegration.git - Путь к интеграционному проекту
