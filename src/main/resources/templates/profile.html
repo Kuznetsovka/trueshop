@@ -10,8 +10,8 @@
 <body>
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
 <h1>User profile</h1>
-<form th:action="@{/users/profile}" th:object="${user}" method="post">
-    <table border="1">
+<form th:action="@{/users/profile}" th:object="${user}" method="post" class="form-horizontal">
+    <table border="1" class="table table-hover">
         <tr>
             <td>Name</td>
             <td><input type="text" readonly th:field="*{name}"></td>
@@ -35,7 +35,7 @@
         </tr>
 
     </table>
-    <button type="submit">Save</button>
+    <button type="submit" сlass="btn btn-primary">Save</button>
 </form>
 </body>
 </html>

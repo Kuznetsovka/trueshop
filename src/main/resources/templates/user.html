@@ -10,7 +10,7 @@
 <body>
 
 <h1>User form</h1>
-<form th:action="@{/users/new}" th:object="${user}" method="post">
+<form th:action="@{/users/new}" th:object="${user}" method="post" class="form-horizontal">
     <table border="1" class="table table-hover">
         <tr>
             <td>Name</td>
@@ -39,7 +39,7 @@
         </tr>
 
     </table>
-    <button type="submit">Save</button>
+    <button type="submit" сlass="btn btn-primary">Save</button>
 </form>
 </body>
 </html>

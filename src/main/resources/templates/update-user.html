@@ -10,8 +10,8 @@
 <body>
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
 
-<form th:action="@{/users/update}" th:object="${user}" method="post">
-    <table border="1">
+<form th:action="@{/users/update}" th:object="${user}" method="post" class="form-horizontal">
+    <table border="1" class="table table-hover">
         <tr>
             <td>Name</td>
             <td th:text="*{name}">Old name</td>
@@ -33,7 +33,7 @@
             </td>
         </tr>
     </table>
-    <button type="submit">Update</button>
+    <button type="submit" сlass="btn btn-primary">Update</button>
 </form>
 
 </body>

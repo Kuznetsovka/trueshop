@@ -5,6 +5,8 @@ import com.kuznetsovka.trueshop.dao.ProductRepository;
 import com.kuznetsovka.trueshop.domain.*;
 import com.kuznetsovka.trueshop.dto.BucketDetailDto;
 import com.kuznetsovka.trueshop.dto.BucketDto;
+import com.kuznetsovka.trueshop.dto.ProductDto;
+import com.kuznetsovka.trueshop.mapper.ProductMapper;
 import com.kuznetsovka.trueshop.service.user.UserService;
 import com.kuznetsovka.trueshop.service.order.OrderService;
 import com.kuznetsovka.trueshop.service.measure.MeasureMethod;
@@ -20,7 +22,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class BucketServiceImpl implements BucketService {
-
     private final BucketRepository bucketRepository;
     private final ProductRepository productRepository;
     private final UserService userService;
@@ -122,6 +123,21 @@ public class BucketServiceImpl implements BucketService {
 
         orderService.saveOrder(order);
         bucket.getProducts().clear();
+        bucketRepository.save(bucket);
+    }
+
+    @Override
+    @Transactional
+    public void deleteProductFromBucket(String username, Product product) {
+        User user = userService.findByName(username);
+        if(user == null){
+            throw new RuntimeException("User is not found");
+        }
+        Bucket bucket = user.getBucket();
+        if(bucket == null || bucket.getProducts().isEmpty()){
+            return;
+        }
+        bucket.getProducts ().remove (product);
         bucketRepository.save(bucket);
     }
 }
