@@ -51,11 +51,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public boolean save(ProductDto dto) {
         Product product = Product.builder()
+                .title(dto.getTitle ())
                 .price (dto.getPrice ())
                 .categories (dto.getCategories ())
                 .build();
         productRepository.save(product);
-
         return true;
     }
 
