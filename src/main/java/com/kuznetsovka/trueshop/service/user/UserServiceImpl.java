@@ -28,18 +28,18 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        InitBDUser();
+//        InitBDUser();
     }
-    @MeasureMethod
-    private void InitBDUser() {
-        if (!userRepository.existsById ((long) 1)) {
-            userRepository.saveAll (Arrays.asList (
-                    new User (null, "admin", passwordEncoder.encode ("pass"), "mail@gmail.com", false, Role.ADMIN,null,null,null),
-                    new User (null, "user", passwordEncoder.encode ("pass"), "test@gmail.com", false, Role.MANAGER,null,null,null),
-                    new User (null, "client", passwordEncoder.encode ("pass"), "client@gmail.com", false, Role.CLIENT,null,null,null)
-            ));
-        }
-    }
+//    @MeasureMethod
+//    private void InitBDUser() {
+//        if (!userRepository.existsById ((long) 1)) {
+//            userRepository.saveAll (Arrays.asList (
+//                    new User (null, "admin", passwordEncoder.encode ("pass"), "mail@gmail.com", false, Role.ADMIN,null,null,null),
+//                    new User (null, "user", passwordEncoder.encode ("pass"), "test@gmail.com", false, Role.MANAGER,null,null,null),
+//                    new User (null, "client", passwordEncoder.encode ("pass"), "client@gmail.com", false, Role.CLIENT,null,null,null)
+//            ));
+//        }
+//    }
 
     @MeasureMethod
     @Override

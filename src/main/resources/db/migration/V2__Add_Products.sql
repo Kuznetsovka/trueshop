@@ -13,4 +13,4 @@ values (4, 'Tomato', 115.0);
 INSERT INTO products (id, title, price)
 values (5, 'Bread', 58.0);
 
-ALTER SEQUENCE user_seq RESTART WITH 6;
+ALTER SEQUENCE product_seq RESTART WITH 6;
