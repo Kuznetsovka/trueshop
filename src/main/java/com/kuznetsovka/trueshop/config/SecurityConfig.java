@@ -3,6 +3,7 @@ package com.kuznetsovka.trueshop.config;
 import com.kuznetsovka.trueshop.domain.Role;
 import com.kuznetsovka.trueshop.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -25,12 +26,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
         jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
-
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+    private ApplicationContext applicationContext;
+
+    private UserService userService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,10 +43,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
+        initUserService();
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
         auth.setUserDetailsService(userService);
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
+    }
+
+    private void initUserService(){
+        if(userService == null){
+            userService = applicationContext.getBean(UserService.class);
+        }
     }
 
     @Override

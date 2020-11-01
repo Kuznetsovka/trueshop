@@ -91,13 +91,13 @@ public class ProductController {
         return "new-product";
     }
 
-//    // http://localhost:8090/products/new - POST
-//    @RequestMapping(value = "/new", method = RequestMethod.POST)
-//    public String addNewProduct(Product savedProduct){
-//        productRepository.save(savedProduct);
-//        System.out.println(savedProduct);
-//        return "redirect:/products/" + savedProduct.getId();
-//    }
+    // http://localhost:8090/products/new - POST
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public String addNewProduct(Product savedProduct){
+        productRepository.save(savedProduct);
+        System.out.println(savedProduct);
+        return "redirect:/products/" + savedProduct.getId();
+    }
 
     // http://localhost:8090/products/update?id=3 - GET
     @GetMapping("/update")

@@ -22,13 +22,11 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final UserService userService;
     private final BucketService bucketService;
-    private final SimpMessagingTemplate template;
 
-    public ProductServiceImpl(ProductRepository productRepository, UserService userService, BucketService bucketService, SimpMessagingTemplate template) {
+    public ProductServiceImpl(ProductRepository productRepository, UserService userService, BucketService bucketService) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.bucketService = bucketService;
-        this.template = template;
     }
 
     @Override
@@ -51,11 +49,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public boolean save(ProductDto dto) {
         Product product = Product.builder()
+                .title(dto.getTitle ())
                 .price (dto.getPrice ())
                 .categories (dto.getCategories ())
                 .build();
         productRepository.save(product);
-
         return true;
     }
 
@@ -84,8 +82,6 @@ public class ProductServiceImpl implements ProductService {
     public void addProduct(ProductDto dto) {
         Product product = ProductMapper.MAPPER.toProduct(dto);
         Product savedProduct = productRepository.save(product);
-        template.convertAndSend("/topic/product",
-                ProductMapper.MAPPER.fromProduct(savedProduct));
     }
 
 
