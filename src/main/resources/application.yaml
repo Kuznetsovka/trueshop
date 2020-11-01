@@ -1,6 +1,6 @@
 server:
+  port: 8090
   hostname: localhost
-  port: ${PORT:8090}
 spring:
   application:
     name: trueshop
@@ -9,9 +9,7 @@ spring:
       ddl-auto: validate
     show-sql: true
   datasource:
-    name: 'dataTrueShop'
-#    jdbc:mysql://localhost:3306/TrueShop?serverTimezone=UTC
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
     url: jdbc:${DATABASE_PATH}
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}

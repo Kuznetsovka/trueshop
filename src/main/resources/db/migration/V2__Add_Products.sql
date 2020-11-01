@@ -12,6 +12,5 @@ values (4, 'Tomato', 115.0);
 
 INSERT INTO products (id, title, price)
 values (5, 'Bread', 58.0);
-SET SQL_SAFE_UPDATES=0;
-UPDATE product_seq SET next_val=6 where next_val=1;
-SET SQL_SAFE_UPDATES=1;
+
+ALTER SEQUENCE user_seq RESTART WITH 6;

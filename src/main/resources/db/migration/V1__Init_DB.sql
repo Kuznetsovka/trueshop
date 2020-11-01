@@ -1,173 +1,106 @@
-
-    create table
-        bucket_products (
-            bucket_id bigint not null,
-            product_id bigint not null)
-        engine=InnoDB;
-    create table bucket_seq (next_val bigint) engine=InnoDB;
-    insert into bucket_seq values ( 1 );
-    create table buckets (
-            id bigint not null,
-            user_id bigint,
-            primary key (id))
-        engine=InnoDB;
---  Category
-    create table
-        categories (
-            id bigint not null,
-            title varchar(255),
-            primary key (id))
-        engine=InnoDB;
-    create table category_seq (next_val bigint) engine=InnoDB;
-    insert into category_seq values ( 1 );
---  Comparison
-    create table
-        comparison_products (
-            comparison_id bigint not null,
-            product_id bigint not null)
-        engine=InnoDB;
-    create table comparison_seq (next_val bigint) engine=InnoDB;
-    insert into comparison_seq values ( 1 );
-    create table
-        comparisons (
-            id bigint not null,
-            user_id bigint,
-            primary key (id))
-        engine=InnoDB;
---  Favorite
-    create table
-        favourite_products (
-            favourite_id bigint not null,
-            product_id bigint not null)
-        engine=InnoDB;
-    create table favourite_seq (next_val bigint) engine=InnoDB;
-    insert into favourite_seq values ( 1 );
-    create table
-        favourites (
-            id bigint not null,
-            user_id bigint,
-            primary key (id))
-        engine=InnoDB;
---  Order
-    create table order_details_seq (next_val bigint) engine=InnoDB;
-    insert into order_details_seq values ( 1 );
-    create table order_seq (next_val bigint) engine=InnoDB;
-    insert into order_seq values ( 1 );
-    create table
-        orders (
-            id bigint not null,
-            address varchar(255),
-            changed datetime(6),
-            created datetime(6),
-            status varchar(255),
-            sum decimal(19,2),
-            user_id bigint,
-            primary key (id))
-        engine=InnoDB;
-    create table
-        orders_details (
-            id bigint not null,
-            amount decimal(19,2),
-            price decimal(19,2),
-            order_id bigint,
-            product_id bigint,
-            primary key (id))
-        engine=InnoDB;
---  Place in Stock
-    create table
-        place_in_stock (
-            id bigint not null,
-            place_fld integer not null,
-            row_fld integer not null,
-            shelf_fld integer not null,
-            span_fld integer not null,
-            primary key (id))
-        engine=InnoDB;
-    create table
-        place_in_stock_products (
-            place_in_stock_id bigint not null,
-            product_id bigint not null)
-        engine=InnoDB;
-    create table place_seq (next_val bigint) engine=InnoDB;
-    insert into place_seq values ( 1 );
---  Product
-    create table product_seq (next_val bigint) engine=InnoDB;
-    insert into product_seq values ( 1 );
-    create table
-        products (
-            id bigint not null,
-            price double precision,
-            title varchar(255),
-            primary key (id))
-        engine=InnoDB;
-    create table
-        products_categories (
-            product_id bigint not null,
-            category_id bigint not null)
-        engine=InnoDB;
-    create table
-        products_place_in_stock (
-            product_id bigint not null,
-            place_in_stock_id bigint not null)
-        engine=InnoDB;
-    create table
-        products_suppliers (
-            product_id bigint not null,
-            supplier_id bigint not null)
-        engine=InnoDB;
---  Supplier
-    create table supplier_seq (next_val bigint) engine=InnoDB;
-    insert into supplier_seq values ( 1 );
-    create table
-        suppliers (
-            id bigint not null,
-            title varchar(255),
-            primary key (id))
-        engine=InnoDB;
-    create table
-        suppliers_products (
-            supplier_id bigint not null,
-            product_id bigint not null)
-        engine=InnoDB;
---  User
-    create table user_seq (next_val bigint) engine=InnoDB;
-    insert into user_seq values ( 1 );
-    create table
-        users (
-            id bigint not null,
-            archive bit not null,
-            email varchar(255),
-            name varchar(255),
-            password varchar(255),
-            role varchar(255),
-            bucket_id bigint,
-            comparison_id bigint,
-            favourite_id bigint,
-            primary key (id))
-        engine=InnoDB;
--- KEYS
-alter table bucket_products add constraint FKBucketToProducts foreign key (product_id) references products (id);
-alter table bucket_products add constraint FKProductToBuckets foreign key (bucket_id) references buckets (id);
-alter table buckets add constraint FKBucketToUsers foreign key (user_id) references users (id);
-alter table comparison_products add constraint FKComparisonToProducts foreign key (product_id) references products (id);
-alter table comparison_products add constraint FKProductToComparisons foreign key (comparison_id) references comparisons (id);
-alter table comparisons add constraint FKComparisonToUsers foreign key (user_id) references users (id);
-alter table favourite_products add constraint FKFavouriteToProducts foreign key (product_id) references products (id);
-alter table favourite_products add constraint FKProductToFavourites foreign key (favourite_id) references favourites (id);
-alter table favourites add constraint FKFavouriteToUsers foreign key (user_id) references users (id);
-alter table orders add constraint FKOrderToUsers foreign key (user_id) references users (id);
-alter table orders_details add constraint FKOrderDelailsToOrders foreign key (order_id) references orders (id);
-alter table orders_details add constraint FKOrderDelailsToProducts foreign key (product_id) references products (id);
-alter table place_in_stock_products add constraint FKPlaceInStockToProducts foreign key (product_id) references products (id);
-alter table place_in_stock_products add constraint FKProductToPlaceInStocks foreign key (place_in_stock_id) references place_in_stock (id);
-alter table products_categories add constraint FKProductToCategories foreign key (category_id) references categories (id);
-alter table products_categories add constraint FKCategoryToProducts foreign key (product_id) references products (id);
-alter table products_place_in_stock add constraint FKPlaceInStocksToProducts foreign key (place_in_stock_id) references place_in_stock (id);
-alter table products_place_in_stock add constraint FKProductsToPlaceInStocks foreign key (product_id) references products (id);
-alter table products_suppliers add constraint FKProductToSuppliers foreign key (supplier_id) references suppliers (id);
-alter table products_suppliers add constraint FKSupplierToProducts foreign key (product_id) references products (id);
-alter table suppliers_products add constraint FKSuppliersToProducts foreign key (product_id) references products (id);
-alter table suppliers_products add constraint FKProductsToSuppliers foreign key (supplier_id) references suppliers (id);
-alter table users add constraint FKUsersToBuckets foreign key (bucket_id) references buckets (id);
-alter table users add constraint FKUsersToComparisons foreign key (comparison_id) references comparisons (id);
-alter table users add constraint FKUsersToFavourites foreign key (favourite_id) references favourites (id);
+alter table if exists bucket_products drop constraint if exists FKd3uv4vwg7eybaqclvc2sn4i5k;
+alter table if exists bucket_products drop constraint if exists FKt11v7b7hocd7iprbkn3v0cui5;
+alter table if exists buckets drop constraint if exists FKnl0ltaj67xhydcrfbq8401nvj;
+alter table if exists comparison_products drop constraint if exists FKc2jjwal56i23c1tt2hnfpciao;
+alter table if exists comparison_products drop constraint if exists FKoicehcydibpvm89tenfskiwj1;
+alter table if exists comparisons drop constraint if exists FKj9f9faabny48m6rmp1b2uxskc;
+alter table if exists favourite_products drop constraint if exists FKb4hw44beqrhil8f12qx5026v2;
+alter table if exists favourite_products drop constraint if exists FKf28muekvrgh648xihbkfv4wdo;
+alter table if exists favourites drop constraint if exists FK6ffqdnwmm3ks4fenx2ml1uap8;
+alter table if exists orders drop constraint if exists FK32ql8ubntj5uh44ph9659tiih;
+alter table if exists orders_details drop constraint if exists FK5o977kj2vptwo70fu7w7so9fe;
+alter table if exists orders_details drop constraint if exists FKs0r9x49croribb4j6tah648gt;
+alter table if exists place_in_stock_products drop constraint if exists FKlyasoqgulnm0gbnd1tvs4gp6b;
+alter table if exists place_in_stock_products drop constraint if exists FKg47bu6ug0i0t4f7etitdl9umr;
+alter table if exists products_categories drop constraint if exists FKqt6m2o5dly3luqcm00f5t4h2p;
+alter table if exists products_categories drop constraint if exists FKtj1vdea8qwerbjqie4xldl1el;
+alter table if exists products_place_in_stock drop constraint if exists FKh8sler2j6pmorrbp8a6lgli4k;
+alter table if exists products_place_in_stock drop constraint if exists FK3hlfn1pk19kxuxii9w4ai20a7;
+alter table if exists products_suppliers drop constraint if exists FKsgpbuup22gs5mhvw2lgicxws4;
+alter table if exists products_suppliers drop constraint if exists FKbmpkpgd8vx6o1vq8exi6in76s;
+alter table if exists suppliers_products drop constraint if exists FKlbph1a19ss69wvvdm0gq18rl6;
+alter table if exists suppliers_products drop constraint if exists FKdpy1wg96qkljeo1xh1cox05r9;
+alter table if exists users drop constraint if exists FK8l2qc4c6gihjdyoch727guci;
+alter table if exists users drop constraint if exists FKovi6xowjrgghpckhqv758ohp5;
+alter table if exists users drop constraint if exists FKnkifqqqp5hgh8ort55ed9pyyr;
+drop table if exists bucket_products cascade;
+drop table if exists buckets cascade;
+drop table if exists categories cascade;
+drop table if exists comparison_products cascade;
+drop table if exists comparisons cascade;
+drop table if exists favourite_products cascade;
+drop table if exists favourites cascade;
+drop table if exists orders cascade;
+drop table if exists orders_details cascade;
+drop table if exists place_in_stock cascade;
+drop table if exists place_in_stock_products cascade;
+drop table if exists products cascade;
+drop table if exists products_categories cascade;
+drop table if exists products_place_in_stock cascade;
+drop table if exists products_suppliers cascade;
+drop table if exists suppliers cascade;
+drop table if exists suppliers_products cascade;
+drop table if exists users cascade;
+drop sequence if exists bucket_seq;
+drop sequence if exists category_seq;
+drop sequence if exists comparison_seq;
+drop sequence if exists favourite_seq;
+drop sequence if exists order_details_seq;
+drop sequence if exists order_seq;
+drop sequence if exists place_seq;
+drop sequence if exists product_seq;
+drop sequence if exists supplier_seq;
+drop sequence if exists user_seq;
+create sequence bucket_seq start 1 increment 1;
+create sequence category_seq start 1 increment 1;
+create sequence comparison_seq start 1 increment 1;
+create sequence favourite_seq start 1 increment 1;
+create sequence order_details_seq start 1 increment 1;
+create sequence order_seq start 1 increment 1;
+create sequence place_seq start 1 increment 1;
+create sequence product_seq start 1 increment 1;
+create sequence supplier_seq start 1 increment 1;
+create sequence user_seq start 1 increment 1;
+create table bucket_products (bucket_id int8 not null, product_id int8 not null);
+create table buckets (id int8 not null, user_id int8, primary key (id));
+create table categories (id int8 not null, title varchar(255), primary key (id));
+create table comparison_products (comparison_id int8 not null, product_id int8 not null);
+create table comparisons (id int8 not null, user_id int8, primary key (id));
+create table favourite_products (favourite_id int8 not null, product_id int8 not null);
+create table favourites (id int8 not null, user_id int8, primary key (id));
+create table orders (id int8 not null, address varchar(255), changed timestamp, created timestamp, status varchar(255), sum numeric(19, 2), user_id int8, primary key (id));
+create table orders_details (id int8 not null, amount numeric(19, 2), price numeric(19, 2), order_id int8, product_id int8, primary key (id));
+create table place_in_stock (id int8 not null, place_fld int4 not null, row_fld int4 not null, shelf_fld int4 not null, span_fld int4 not null, primary key (id));
+create table place_in_stock_products (place_in_stock_id int8 not null, product_id int8 not null);
+create table products (id int8 not null, price float8, title varchar(255), primary key (id));
+create table products_categories (product_id int8 not null, category_id int8 not null);
+create table products_place_in_stock (product_id int8 not null, place_in_stock_id int8 not null);
+create table products_suppliers (product_id int8 not null, supplier_id int8 not null);
+create table suppliers (id int8 not null, title varchar(255), primary key (id));
+create table suppliers_products (supplier_id int8 not null, product_id int8 not null);
+create table users (id int8 not null, archive boolean not null, email varchar(255), name varchar(255), password varchar(255), role varchar(255), bucket_id int8, comparison_id int8, favourite_id int8, primary key (id));
+alter table if exists bucket_products add constraint FKd3uv4vwg7eybaqclvc2sn4i5k foreign key (product_id) references products;
+alter table if exists bucket_products add constraint FKt11v7b7hocd7iprbkn3v0cui5 foreign key (bucket_id) references buckets;
+alter table if exists buckets add constraint FKnl0ltaj67xhydcrfbq8401nvj foreign key (user_id) references users;
+alter table if exists comparison_products add constraint FKc2jjwal56i23c1tt2hnfpciao foreign key (product_id) references products;
+alter table if exists comparison_products add constraint FKoicehcydibpvm89tenfskiwj1 foreign key (comparison_id) references comparisons;
+alter table if exists comparisons add constraint FKj9f9faabny48m6rmp1b2uxskc foreign key (user_id) references users;
+alter table if exists favourite_products add constraint FKb4hw44beqrhil8f12qx5026v2 foreign key (product_id) references products;
+alter table if exists favourite_products add constraint FKf28muekvrgh648xihbkfv4wdo foreign key (favourite_id) references favourites;
+alter table if exists favourites add constraint FK6ffqdnwmm3ks4fenx2ml1uap8 foreign key (user_id) references users;
+alter table if exists orders add constraint FK32ql8ubntj5uh44ph9659tiih foreign key (user_id) references users;
+alter table if exists orders_details add constraint FK5o977kj2vptwo70fu7w7so9fe foreign key (order_id) references orders;
+alter table if exists orders_details add constraint FKs0r9x49croribb4j6tah648gt foreign key (product_id) references products;
+alter table if exists place_in_stock_products add constraint FKlyasoqgulnm0gbnd1tvs4gp6b foreign key (product_id) references products;
+alter table if exists place_in_stock_products add constraint FKg47bu6ug0i0t4f7etitdl9umr foreign key (place_in_stock_id) references place_in_stock;
+alter table if exists products_categories add constraint FKqt6m2o5dly3luqcm00f5t4h2p foreign key (category_id) references categories;
+alter table if exists products_categories add constraint FKtj1vdea8qwerbjqie4xldl1el foreign key (product_id) references products;
+alter table if exists products_place_in_stock add constraint FKh8sler2j6pmorrbp8a6lgli4k foreign key (place_in_stock_id) references place_in_stock;
+alter table if exists products_place_in_stock add constraint FK3hlfn1pk19kxuxii9w4ai20a7 foreign key (product_id) references products;
+alter table if exists products_suppliers add constraint FKsgpbuup22gs5mhvw2lgicxws4 foreign key (supplier_id) references suppliers;
+alter table if exists products_suppliers add constraint FKbmpkpgd8vx6o1vq8exi6in76s foreign key (product_id) references products;
+alter table if exists suppliers_products add constraint FKlbph1a19ss69wvvdm0gq18rl6 foreign key (product_id) references products;
+alter table if exists suppliers_products add constraint FKdpy1wg96qkljeo1xh1cox05r9 foreign key (supplier_id) references suppliers;
+alter table if exists users add constraint FK8l2qc4c6gihjdyoch727guci foreign key (bucket_id) references buckets;
+alter table if exists users add constraint FKovi6xowjrgghpckhqv758ohp5 foreign key (comparison_id) references comparisons;
+alter table if exists users add constraint FKnkifqqqp5hgh8ort55ed9pyyr foreign key (favourite_id) references favourites;
