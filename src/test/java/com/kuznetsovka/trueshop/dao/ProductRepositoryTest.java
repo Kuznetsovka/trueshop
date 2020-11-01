@@ -14,7 +14,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-
+@Disabled
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @SqlGroup({@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:initProducts.sql")})

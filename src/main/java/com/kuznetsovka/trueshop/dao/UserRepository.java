@@ -9,7 +9,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findFirstByName(String name);
     List<User> findAllByName(String name);
-    List<User> findAll();
     List<User> findAllByIdBetween(Long startId, Long endId);
     List<User> findAllByNameLike(String name);
 }
