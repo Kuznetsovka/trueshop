@@ -14,3 +14,9 @@ INSERT INTO products (id, title, price)
 values (5, 'Bread', 58.0);
 
 ALTER SEQUENCE product_seq RESTART WITH 6;
+
+INSERT INTO users (id, archive, email, name, password, role, bucket_id)
+values (1, false, 'mail@mail.ru', 'admin', '$2a$10$1M7wbTGC5H8Q12PvFgFFfe49526kJFF1hDoKVOF844GPGW8F9Mtwu', 'ADMIN', null);
+
+ALTER SEQUENCE user_seq RESTART WITH 2;
+

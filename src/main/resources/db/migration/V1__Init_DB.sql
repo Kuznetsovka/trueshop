@@ -104,3 +104,4 @@ alter table if exists suppliers_products add constraint FKdpy1wg96qkljeo1xh1cox0
 alter table if exists users add constraint FK8l2qc4c6gihjdyoch727guci foreign key (bucket_id) references buckets;
 alter table if exists users add constraint FKovi6xowjrgghpckhqv758ohp5 foreign key (comparison_id) references comparisons;
 alter table if exists users add constraint FKnkifqqqp5hgh8ort55ed9pyyr foreign key (favourite_id) references favourites;
+
